@@ -13,6 +13,7 @@ import { Store } from '../Store';
 import Form from 'react-bootstrap/Form';
 import CheckoutSteps from '../components/CheckoutSteps';
 import LoadingBox from '../components/LoadingBox';
+import { TrackGoogleAnalyticsEventVal } from '../analytics';
 
 const reducer = (state, action) => {
   switch (action.type) {
@@ -115,6 +116,18 @@ export default function PlaceOrderScreen() {
           setcouponvalue(data.value);
           iscoupon = false;
         }
+        TrackGoogleAnalyticsEventVal(
+          'User',
+          'User Coupon Usage',
+          `User ID: ${userInfo._id}`,
+          data.code
+        );
+        TrackGoogleAnalyticsEventVal(
+          'Coupon',
+          'Coupon Usage Tries',
+          `Coupon ID: ${data.code}`,
+          1
+        );
       } catch (err) {
         setcouponvalue(0);
         toast.warning('Coupon not avalible');
@@ -175,6 +188,12 @@ export default function PlaceOrderScreen() {
         ctxDispatch({ type: 'CART_CLEAR' });
         dispatch({ type: 'CREATE_SUCCESS' });
         localStorage.removeItem('cartItems');
+        TrackGoogleAnalyticsEventVal(
+          'User',
+          'Order',
+          `User ID: ${userInfo._id}`,
+          cart.totalPrice
+        );
         navigate(`/order/${data.order._id}`);
       } catch (err) {
         dispatch({ type: 'CREATE_FAIL' });

@@ -13,6 +13,7 @@ import MessageBox from '../components/MessageBox';
 import { Store } from '../Store';
 import { getError } from '../utils';
 import { toast } from 'react-toastify';
+import { TrackGoogleAnalyticsEventVal } from '../analytics';
 
 function reducer(state, action) {
   switch (action.type) {
@@ -77,6 +78,12 @@ export default function OrderScreen() {
       dispatch({ type: 'PAY_FAIL', payload: getError(err) });
       toast.error(getError(err));
     }
+    TrackGoogleAnalyticsEventVal(
+      'User',
+      'Pay',
+      `Order ID: ${order._id}`,
+      order.isPaid
+    );
     try {
       dispatch({ type: 'UPDATE_REQUEST' });
       const { data } = await axios.post(

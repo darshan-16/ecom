@@ -9,11 +9,13 @@ import Button from 'react-bootstrap/Button';
 import Card from 'react-bootstrap/Card';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import { TrackGoogleAnalyticsEvent } from '../analytics';
 
 export default function CartScreen() {
   const navigate = useNavigate();
   const { state, dispatch: ctxDispatch } = useContext(Store);
   const {
+    userInfo,
     cart: { cartItems },
   } = state;
 
@@ -30,10 +32,16 @@ export default function CartScreen() {
   };
   const removeItemHandler = (item) => {
     ctxDispatch({ type: 'CART_REMOVE_ITEM', payload: item });
+    TrackGoogleAnalyticsEvent(
+      'User',
+      'Remove Items',
+      `Product ID: ${item._id}`
+    );
   };
 
   const checkoutHandler = () => {
     navigate('/signin?redirect=/shipping');
+    TrackGoogleAnalyticsEvent('User', 'Check Out', `User ID: ${userInfo._id}`);
   };
 
   return (

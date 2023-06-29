@@ -5,11 +5,13 @@ import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import CheckoutSteps from '../components/CheckoutSteps';
 import { Store } from '../Store';
+import { TrackGoogleAnalyticsEventVal } from '../analytics';
 
 export default function PaymentMethodScreen() {
   const navigate = useNavigate();
   const { state, dispatch: ctxDispatch } = useContext(Store);
   const {
+    userInfo,
     cart: { shippingAddress, paymentMethod },
   } = state;
 
@@ -26,6 +28,12 @@ export default function PaymentMethodScreen() {
     e.preventDefault();
     ctxDispatch({ type: 'SAVE_PAYMENT_METHOD', payload: paymentMethodName });
     localStorage.setItem('paymentMethod', paymentMethodName);
+    TrackGoogleAnalyticsEventVal(
+      'User',
+      'Payment method',
+      `User ID: ${userInfo._id}`,
+      paymentMethodName
+    );
     navigate('/placeorder');
   };
   return (
@@ -50,10 +58,10 @@ export default function PaymentMethodScreen() {
           <div className="mb-3">
             <Form.Check
               type="radio"
-              id="Stripe"
-              label="Stripe"
-              value="Stripe"
-              checked={paymentMethodName === 'Stripe'}
+              id="NetBanking"
+              label="NetBanking"
+              value="NetBanking"
+              checked={paymentMethodName === 'NetBanking'}
               onChange={(e) => setPaymentMethod(e.target.value)}
             />
           </div>

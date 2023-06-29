@@ -23,3 +23,19 @@ export const TrackGoogleAnalyticsEvent = (category, action, label) => {
     label: label,
   });
 };
+
+export const TrackGoogleAnalyticsEventVal = (
+  category,
+  action,
+  label,
+  value
+) => {
+  console.log('GA event:', category, ':', action, ':', label, ':', value);
+  // Send GA4 Event
+  ReactGA.event({
+    category: category,
+    action: action,
+    label: label,
+    value: value,
+  });
+};

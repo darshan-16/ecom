@@ -44,7 +44,7 @@ import ForgetPasswordScreen from './screens/ForgetPasswordScreen';
 import ResetPasswordScreen from './screens/ResetPasswordScreen';
 import CouponCreateScreen from './screens/CouponCreateScreen';
 import ProductCreateScreen from './screens/ProductCreateScreen';
-import { initGA, logPageView } from './analytics';
+import { TrackGoogleAnalyticsEvent, initGA, logPageView } from './analytics';
 
 function App() {
   const { state, dispatch: ctxDispatch } = useContext(Store);
@@ -55,6 +55,7 @@ function App() {
     localStorage.removeItem('userInfo');
     localStorage.removeItem('shippingAddress');
     localStorage.removeItem('paymentMethod');
+    TrackGoogleAnalyticsEvent('User', 'SignOut', `User ID: ${userInfo._id}`);
     window.location.href = '/signin';
   };
   const [sidebarIsOpen, setSidebarIsOpen] = useState(false);
@@ -98,7 +99,7 @@ function App() {
               </Button>
 
               <LinkContainer to="/">
-                <Navbar.Brand>amazona</Navbar.Brand>
+                <Navbar.Brand>Ecommerce</Navbar.Brand>
               </LinkContainer>
               <Navbar.Toggle aria-controls="basic-navbar-nav" />
               <Navbar.Collapse id="basic-navbar-nav">
