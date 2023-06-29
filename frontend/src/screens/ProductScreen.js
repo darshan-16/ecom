@@ -16,6 +16,7 @@ import { getError } from '../utils';
 import { Store } from '../Store';
 import FloatingLabel from 'react-bootstrap/FloatingLabel';
 import { toast } from 'react-toastify';
+import ReactGA from 'react-ga';
 
 const reducer = (state, action) => {
   switch (action.type) {
@@ -39,6 +40,9 @@ const reducer = (state, action) => {
 };
 
 function ProductScreen() {
+  useEffect(() => {
+    ReactGA.pageview(window.location.pathname);
+  }, []);
   let reviewsRef = useRef();
 
   const [rating, setRating] = useState(0);
@@ -81,6 +85,12 @@ function ProductScreen() {
     ctxDispatch({
       type: 'CART_ADD_ITEM',
       payload: { ...product, quantity },
+    });
+    ReactGA.event({
+      category: data.name,
+      action: 'Cart add',
+      label: 'Add to cart',
+      value: data.price,
     });
     navigate('/cart');
   };

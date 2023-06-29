@@ -5,6 +5,7 @@ import Rating from './Rating';
 import axios from 'axios';
 import { useContext } from 'react';
 import { Store } from '../Store';
+import ReactGA from 'react-ga';
 
 function Product(props) {
   const { product } = props;
@@ -25,6 +26,12 @@ function Product(props) {
     ctxDispatch({
       type: 'CART_ADD_ITEM',
       payload: { ...item, quantity },
+    });
+    ReactGA.event({
+      category: data.name,
+      action: 'Cart add',
+      label: 'Add to cart',
+      value: data.price,
     });
   };
 

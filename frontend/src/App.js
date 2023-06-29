@@ -44,6 +44,10 @@ import ForgetPasswordScreen from './screens/ForgetPasswordScreen';
 import ResetPasswordScreen from './screens/ResetPasswordScreen';
 import CouponCreateScreen from './screens/CouponCreateScreen';
 import ProductCreateScreen from './screens/ProductCreateScreen';
+import ReactGA from 'react-ga';
+
+const TRACKING_ID = 'G-X2XEB2TJ4G';
+ReactGA.initialize(TRACKING_ID);
 
 function App() {
   const { state, dispatch: ctxDispatch } = useContext(Store);
