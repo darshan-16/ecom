@@ -16,7 +16,7 @@ import { getError } from '../utils';
 import { Store } from '../Store';
 import FloatingLabel from 'react-bootstrap/FloatingLabel';
 import { toast } from 'react-toastify';
-import ReactGA from 'react-ga';
+import ReactGA from 'react-ga4';
 
 const reducer = (state, action) => {
   switch (action.type) {
