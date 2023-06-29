@@ -17,6 +17,7 @@ import { Store } from '../Store';
 import FloatingLabel from 'react-bootstrap/FloatingLabel';
 import { toast } from 'react-toastify';
 import ReactGA from 'react-ga4';
+import { TrackGoogleAnalyticsEvent } from '../analytics';
 
 const reducer = (state, action) => {
   switch (action.type) {
@@ -83,11 +84,11 @@ function ProductScreen() {
       type: 'CART_ADD_ITEM',
       payload: { ...product, quantity },
     });
-    ReactGA.event({
-      category: 'User',
-      action: 'Add to cart',
-      label: `Product ID: ${product._id}`,
-    });
+    TrackGoogleAnalyticsEvent(
+      'User',
+      'Add to cart',
+      `Product ID: ${product._id}`
+    );
     navigate('/cart');
   };
 

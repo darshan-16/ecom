@@ -6,6 +6,20 @@ export const initGA = () => {
 };
 
 export const logPageView = () => {
-  ReactGA.set({ page: window.location.pathname });
-  ReactGA.pageview(window.location.pathname);
+  ReactGA.send({
+    hitType: 'pageview',
+    page: window.location.pathname,
+    title: 'Path',
+  });
+  console.log('Sent path:', window.location.pathname);
+};
+
+export const TrackGoogleAnalyticsEvent = (category, action, label) => {
+  console.log('GA event:', category, ':', action, ':', label);
+  // Send GA4 Event
+  ReactGA.event({
+    category: category,
+    action: action,
+    label: label,
+  });
 };

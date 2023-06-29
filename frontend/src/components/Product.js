@@ -6,6 +6,7 @@ import axios from 'axios';
 import { useContext } from 'react';
 import { Store } from '../Store';
 import ReactGA from 'react-ga4';
+import { TrackGoogleAnalyticsEvent } from '../analytics';
 
 function Product(props) {
   const { product } = props;
@@ -27,11 +28,7 @@ function Product(props) {
       type: 'CART_ADD_ITEM',
       payload: { ...item, quantity },
     });
-    ReactGA.event({
-      category: 'User',
-      action: 'Add to cart',
-      label: `Product ID: ${item._id}`,
-    });
+    TrackGoogleAnalyticsEvent('User', 'Add to cart', `Product ID: ${item._id}`);
   };
 
   return (
