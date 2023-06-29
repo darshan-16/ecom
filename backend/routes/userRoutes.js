@@ -4,6 +4,8 @@ import expressAsyncHandler from 'express-async-handler';
 import jwt from 'jsonwebtoken';
 import User from '../models/userModel.js';
 import { isAuth, isAdmin, generateToken } from '../utils.js';
+import Order from '../models/orderModel.js';
+import Product from '../models/productModel.js';
 
 const userRouter = express.Router();
 
@@ -107,12 +109,16 @@ userRouter.delete(
   isAdmin,
   expressAsyncHandler(async (req, res) => {
     const user = await User.findById(req.params.id);
+    const userId = req.params.id;
     if (user) {
       if (user.email === 'admin@example.com') {
         res.status(400).send({ message: 'Can Not Delete Admin User' });
         return;
       }
-      await User.deleteMany(user);
+      await Order.deleteMany({ user: userId });
+      await Product.deleteMany({ createduserid: userId });
+      await User.deleteOne({ _id: userId });
+
       res.send({ message: 'User Deleted' });
     } else {
       res.status(404).send({ message: 'User Not Found' });
