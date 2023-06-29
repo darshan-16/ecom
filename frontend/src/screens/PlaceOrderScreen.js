@@ -14,6 +14,7 @@ import Form from 'react-bootstrap/Form';
 import CheckoutSteps from '../components/CheckoutSteps';
 import LoadingBox from '../components/LoadingBox';
 import { TrackGoogleAnalyticsEventVal } from '../analytics';
+import CouponList from '../components/CouponList';
 
 const reducer = (state, action) => {
   switch (action.type) {
@@ -52,6 +53,7 @@ export default function PlaceOrderScreen() {
   const [couponvalue, setcouponvalue] = useState('0.00');
   var [usersUsed, setusersUsed] = useState('');
   var [remainingUsage, setremainingUsage] = useState('');
+  const [modalShow, setModalShow] = useState(false);
 
   var rewardCoins = avaredeamcoins - redeamcoins;
   if (rewardCoins < 0) {
@@ -366,6 +368,17 @@ export default function PlaceOrderScreen() {
                         </Button>
                       )}
                     </Col>
+                  </Row>
+                  <Row>
+                    <Col></Col>
+                    <Col>
+                      <Link onClick={() => setModalShow(true)}>Coupons</Link>
+                      <CouponList
+                        show={modalShow}
+                        onHide={() => setModalShow(false)}
+                      />
+                    </Col>
+                    <Col></Col>
                   </Row>
                 </ListGroup.Item>
                 <ListGroup.Item>

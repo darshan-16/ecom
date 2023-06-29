@@ -10,6 +10,15 @@ CouponRouter.get('/', async (req, res) => {
   res.send(coupons);
 });
 
+CouponRouter.get(
+  '/list',
+  isAuth,
+  expressAsyncHandler(async (req, res) => {
+    const coupons = await Coupon.find();
+    res.send({ coupons });
+  })
+);
+
 CouponRouter.post(
   '/create',
   isAuth,
