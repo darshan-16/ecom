@@ -44,10 +44,7 @@ import ForgetPasswordScreen from './screens/ForgetPasswordScreen';
 import ResetPasswordScreen from './screens/ResetPasswordScreen';
 import CouponCreateScreen from './screens/CouponCreateScreen';
 import ProductCreateScreen from './screens/ProductCreateScreen';
-import ReactGA from 'react-ga';
-
-const TRACKING_ID = 'G-X2XEB2TJ4G';
-ReactGA.initialize(TRACKING_ID);
+import { initGA, logPageView } from './analytics';
 
 function App() {
   const { state, dispatch: ctxDispatch } = useContext(Store);
@@ -65,6 +62,8 @@ function App() {
 
   useEffect(() => {
     const fetchCategories = async () => {
+      initGA(); // Initialize Google Analytics
+      logPageView(); // Log the initial page view
       try {
         const { data } = await axios.get(`/api/products/categories`);
         setCategories(data);

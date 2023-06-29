@@ -28,10 +28,9 @@ function Product(props) {
       payload: { ...item, quantity },
     });
     ReactGA.event({
-      category: data.name,
-      action: 'Cart add',
-      label: 'Add to cart',
-      value: data.price,
+      category: 'User',
+      action: 'Add to cart',
+      label: `Product ID: ${item._id}`,
     });
   };
 

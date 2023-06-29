@@ -40,9 +40,6 @@ const reducer = (state, action) => {
 };
 
 function ProductScreen() {
-  useEffect(() => {
-    ReactGA.pageview(window.location.pathname);
-  }, []);
   let reviewsRef = useRef();
 
   const [rating, setRating] = useState(0);
@@ -87,10 +84,9 @@ function ProductScreen() {
       payload: { ...product, quantity },
     });
     ReactGA.event({
-      category: data.name,
-      action: 'Cart add',
-      label: 'Add to cart',
-      value: data.price,
+      category: 'User',
+      action: 'Add to cart',
+      label: `Product ID: ${product._id}`,
     });
     navigate('/cart');
   };
