@@ -123,6 +123,8 @@ export default function CouponCreateScreen() {
           <Form.Group className="mb-3" controlId="value">
             <Form.Label>Coupon Value</Form.Label>
             <Form.Control
+              type="number"
+              min={0}
               value={value}
               onChange={(e) => setValue(e.target.value)}
               required
@@ -131,6 +133,8 @@ export default function CouponCreateScreen() {
           <Form.Group className="mb-3" controlId="purchaceAbove">
             <Form.Label>Purchace Above</Form.Label>
             <Form.Control
+              type="number"
+              min={0}
               value={purchaceAbove}
               onChange={(e) => setPurchaceAbove(e.target.value)}
               required
@@ -139,6 +143,8 @@ export default function CouponCreateScreen() {
           <Form.Group className="mb-3" controlId="remainingUsage">
             <Form.Label>Remaining Usage</Form.Label>
             <Form.Control
+              type="number"
+              min={0}
               value={remainingUsage}
               onChange={(e) => setRemainingUsage(e.target.value)}
               required

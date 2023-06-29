@@ -64,11 +64,12 @@ productRouter.delete(
   isAuth,
   isVendor,
   expressAsyncHandler(async (req, res) => {
-    const product = await Product.findById(req.params.id);
-    if (product) {
-      await Product.deleteMany(product);
+    const productId = req.params.id;
+    try {
+      await Product.deleteOne({ _id: productId });
+      // console.log(product);
       res.send({ message: 'Product Deleted' });
-    } else {
+    } catch {
       res.status(404).send({ message: 'Product Not Found' });
     }
   })
@@ -95,14 +96,11 @@ productRouter.delete(
         return res.status(404).send({ message: 'Review not found.' });
       }
       const newNumReviews = product.numReviews - 1;
-      var newRating = 0;
-      if (product.numReviews == 1) {
-        newRating = 0;
-      } else {
-        newRating =
-          (product.rating * product.numReviews - review.rating) /
-          (product.numReviews - 1);
-      }
+      const newRating =
+        product.numReviews == 1
+          ? 0
+          : (product.rating * product.numReviews - review.reviews[0].rating) /
+            (product.numReviews - 1);
       product.numReviews = newNumReviews;
       product.rating = newRating;
       product.reviews.pull({ _id: review.reviews[0]._id });

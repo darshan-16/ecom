@@ -8,6 +8,7 @@ import LoadingBox from '../components/LoadingBox';
 import MessageBox from '../components/MessageBox';
 import { Store } from '../Store';
 import { getError } from '../utils';
+import Table from 'react-bootstrap/esm/Table';
 
 const reducer = (state, action) => {
   switch (action.type) {
@@ -100,7 +101,7 @@ export default function UserListScreen() {
       ) : error ? (
         <MessageBox variant="danger">{error}</MessageBox>
       ) : (
-        <table className="table">
+        <Table className="table" responsive>
           <thead>
             <tr>
               <th>ID</th>
@@ -139,7 +140,7 @@ export default function UserListScreen() {
               </tr>
             ))}
           </tbody>
-        </table>
+        </Table>
       )}
     </div>
   );

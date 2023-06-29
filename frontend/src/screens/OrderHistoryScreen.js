@@ -7,6 +7,7 @@ import MessageBox from '../components/MessageBox';
 import { Store } from '../Store';
 import { getError } from '../utils';
 import Button from 'react-bootstrap/esm/Button';
+import Table from 'react-bootstrap/esm/Table';
 
 const reducer = (state, action) => {
   switch (action.type) {
@@ -61,7 +62,7 @@ export default function OrderHistoryScreen() {
       ) : error ? (
         <MessageBox variant="danger">{error}</MessageBox>
       ) : (
-        <table className="table">
+        <Table className="table" responsive>
           <thead>
             <tr>
               <th>ID</th>
@@ -98,7 +99,7 @@ export default function OrderHistoryScreen() {
               </tr>
             ))}
           </tbody>
-        </table>
+        </Table>
       )}
     </div>
   );

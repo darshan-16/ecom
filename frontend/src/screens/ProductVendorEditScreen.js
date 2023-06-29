@@ -174,7 +174,7 @@ export default function ProductEditScreen() {
             />
           </Form.Group>
           <Form.Group className="mb-3" controlId="slug">
-            <Form.Label>Slug</Form.Label>
+            <Form.Label>Slug - Unique for identification</Form.Label>
             <Form.Control
               value={slug}
               onChange={(e) => setSlug(e.target.value)}
@@ -184,6 +184,8 @@ export default function ProductEditScreen() {
           <Form.Group className="mb-3" controlId="name">
             <Form.Label>Price</Form.Label>
             <Form.Control
+              type="number"
+              min={0}
               value={price}
               onChange={(e) => setPrice(e.target.value)}
               required
@@ -195,6 +197,7 @@ export default function ProductEditScreen() {
               value={image}
               onChange={(e) => setImage(e.target.value)}
               required
+              disabled
             />
           </Form.Group>
           <Form.Group className="mb-3" controlId="imageFile">
@@ -245,6 +248,8 @@ export default function ProductEditScreen() {
           <Form.Group className="mb-3" controlId="countInStock">
             <Form.Label>Count In Stock</Form.Label>
             <Form.Control
+              type="number"
+              min={0}
               value={countInStock}
               onChange={(e) => setCountInStock(e.target.value)}
               required

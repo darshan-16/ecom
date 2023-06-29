@@ -5,6 +5,7 @@ import Modal from 'react-bootstrap/Modal';
 import { Store } from '../Store';
 import LoadingBox from './LoadingBox';
 import MessageBox from './MessageBox';
+import Table from 'react-bootstrap/esm/Table';
 
 const reducer = (state, action) => {
   switch (action.type) {
@@ -63,7 +64,7 @@ export default function CouponList(props) {
             </Modal.Title>
           </Modal.Header>
           <Modal.Body className="grid-example">
-            <table className="table">
+            <Table className="table" responsive>
               <thead>
                 <tr>
                   <th>NAME</th>
@@ -84,7 +85,7 @@ export default function CouponList(props) {
                   </tr>
                 ))}
               </tbody>
-            </table>
+            </Table>
           </Modal.Body>
           <Modal.Footer>
             <Button onClick={props.onHide}>Close</Button>

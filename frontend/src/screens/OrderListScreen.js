@@ -2,6 +2,7 @@ import axios from 'axios';
 import React, { useContext, useEffect, useReducer } from 'react';
 import { toast } from 'react-toastify';
 import Button from 'react-bootstrap/Button';
+import Table from 'react-bootstrap/Table';
 import { Helmet } from 'react-helmet-async';
 import { useNavigate } from 'react-router-dom';
 import LoadingBox from '../components/LoadingBox';
@@ -99,7 +100,7 @@ export default function OrderListScreen() {
       ) : error ? (
         <MessageBox variant="danger">{error}</MessageBox>
       ) : (
-        <table className="table">
+        <Table className="table" responsive>
           <thead>
             <tr>
               <th>ID</th>
@@ -147,7 +148,7 @@ export default function OrderListScreen() {
               </tr>
             ))}
           </tbody>
-        </table>
+        </Table>
       )}
     </div>
   );

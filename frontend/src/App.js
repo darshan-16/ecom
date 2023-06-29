@@ -45,6 +45,7 @@ import ResetPasswordScreen from './screens/ResetPasswordScreen';
 import CouponCreateScreen from './screens/CouponCreateScreen';
 import ProductCreateScreen from './screens/ProductCreateScreen';
 import { TrackGoogleAnalyticsEvent, initGA, logPageView } from './analytics';
+import Offcanvas from 'react-bootstrap/Offcanvas';
 
 function App() {
   const { state, dispatch: ctxDispatch } = useContext(Store);
@@ -60,6 +61,11 @@ function App() {
   };
   const [sidebarIsOpen, setSidebarIsOpen] = useState(false);
   const [categories, setCategories] = useState([]);
+
+  const [show, setShow] = useState(false);
+
+  const handleClose = () => setShow(false);
+  const handleShow = () => setShow(true);
 
   useEffect(() => {
     const fetchCategories = async () => {
@@ -91,10 +97,7 @@ function App() {
         <header>
           <Navbar bg="dark" variant="dark" expand="lg">
             <Container>
-              <Button
-                variant="dark"
-                onClick={() => setSidebarIsOpen(!sidebarIsOpen)}
-              >
+              <Button variant="dark" onClick={handleShow}>
                 <i className="fas fa-bars"></i>
               </Button>
 
@@ -113,6 +116,35 @@ function App() {
                       </Badge>
                     )}
                   </Link>
+                  {userInfo && userInfo.isAdmin && (
+                    <NavDropdown title="Admin" id="admin-nav-dropdown">
+                      <LinkContainer to="/admin/dashboard">
+                        <NavDropdown.Item>Dashboard</NavDropdown.Item>
+                      </LinkContainer>
+                      <LinkContainer to="/admin/products">
+                        <NavDropdown.Item>Products</NavDropdown.Item>
+                      </LinkContainer>
+                      <LinkContainer to="/admin/coupon">
+                        <NavDropdown.Item>Coupon</NavDropdown.Item>
+                      </LinkContainer>
+                      <LinkContainer to="/admin/orders">
+                        <NavDropdown.Item>Orders</NavDropdown.Item>
+                      </LinkContainer>
+                      <LinkContainer to="/admin/users">
+                        <NavDropdown.Item>Users</NavDropdown.Item>
+                      </LinkContainer>
+                    </NavDropdown>
+                  )}
+                  {userInfo && userInfo.isVendor && (
+                    <NavDropdown title="Vendor" id="vendor-nav-dropdown">
+                      <LinkContainer to="/vendor/products">
+                        <NavDropdown.Item>Products</NavDropdown.Item>
+                      </LinkContainer>
+                      <LinkContainer to="/vendor/orders">
+                        <NavDropdown.Item>Orders</NavDropdown.Item>
+                      </LinkContainer>
+                    </NavDropdown>
+                  )}
                   {userInfo ? (
                     <NavDropdown title={userInfo.name} id="basic-nav-dropdown">
                       <LinkContainer to="/profile">
@@ -135,63 +167,34 @@ function App() {
                       Sign In
                     </Link>
                   )}
-                  {userInfo && userInfo.isVendor && (
-                    <NavDropdown title="Vendor" id="vendor-nav-dropdown">
-                      <LinkContainer to="/vendor/products">
-                        <NavDropdown.Item>Products</NavDropdown.Item>
-                      </LinkContainer>
-                      <LinkContainer to="/vendor/orders">
-                        <NavDropdown.Item>Orders</NavDropdown.Item>
-                      </LinkContainer>
-                    </NavDropdown>
-                  )}
-                  {userInfo && userInfo.isAdmin && (
-                    <NavDropdown title="Admin" id="admin-nav-dropdown">
-                      <LinkContainer to="/admin/dashboard">
-                        <NavDropdown.Item>Dashboard</NavDropdown.Item>
-                      </LinkContainer>
-                      <LinkContainer to="/admin/products">
-                        <NavDropdown.Item>Products</NavDropdown.Item>
-                      </LinkContainer>
-                      <LinkContainer to="/admin/coupon">
-                        <NavDropdown.Item>Coupon</NavDropdown.Item>
-                      </LinkContainer>
-                      <LinkContainer to="/admin/orders">
-                        <NavDropdown.Item>Orders</NavDropdown.Item>
-                      </LinkContainer>
-                      <LinkContainer to="/admin/users">
-                        <NavDropdown.Item>Users</NavDropdown.Item>
-                      </LinkContainer>
-                    </NavDropdown>
-                  )}
                 </Nav>
               </Navbar.Collapse>
             </Container>
           </Navbar>
         </header>
-        <div
-          className={
-            sidebarIsOpen
-              ? 'active-nav side-navbar d-flex justify-content-between flex-wrap flex-column'
-              : 'side-navbar d-flex justify-content-between flex-wrap flex-column'
-          }
-        >
-          <Nav className="flex-column text-white w-100 p-2">
-            <Nav.Item>
-              <strong>Categories</strong>
-            </Nav.Item>
-            {categories.map((category) => (
-              <Nav.Item key={category}>
-                <LinkContainer
-                  to={{ pathname: '/search', search: `category=${category}` }}
-                  onClick={() => setSidebarIsOpen(false)}
-                >
-                  <Nav.Link>{category}</Nav.Link>
-                </LinkContainer>
-              </Nav.Item>
-            ))}
-          </Nav>
-        </div>
+        <Offcanvas show={show} onHide={handleClose} className="bg-dark">
+          <Offcanvas.Header
+            className="text-white font-weight-bold"
+            closeButton
+            closeVariant="white"
+          >
+            <Offcanvas.Title>Categories</Offcanvas.Title>
+          </Offcanvas.Header>
+          <Offcanvas.Body className="text-white">
+            <Nav className="flex-column text-white w-100 p-2">
+              {categories.map((category) => (
+                <Nav.Item key={category}>
+                  <LinkContainer
+                    to={{ pathname: '/search', search: `category=${category}` }}
+                    onClick={() => setSidebarIsOpen(false)}
+                  >
+                    <Nav.Link>{category}</Nav.Link>
+                  </LinkContainer>
+                </Nav.Item>
+              ))}
+            </Nav>
+          </Offcanvas.Body>
+        </Offcanvas>
         <main>
           <Container className="mt-3">
             <Routes>
