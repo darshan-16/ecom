@@ -95,29 +95,6 @@ export default function CouponListScreen() {
     }
   }, [page, userInfo, successDelete]);
 
-  const createHandler = async () => {
-    if (window.confirm('Are you sure to create?')) {
-      try {
-        dispatch({ type: 'CREATE_REQUEST' });
-        const { data } = await axios.post(
-          '/api/coupons',
-          {},
-          {
-            headers: { Authorization: `Bearer ${userInfo.token}` },
-          }
-        );
-        toast.success('coupon created successfully');
-        dispatch({ type: 'CREATE_SUCCESS' });
-        navigate(`/admin/coupon/${data.product._id}`);
-      } catch (err) {
-        toast.error(getError(error));
-        dispatch({
-          type: 'CREATE_FAIL',
-        });
-      }
-    }
-  };
-
   const deleteHandler = async (coupon) => {
     if (window.confirm('Are you sure to delete?')) {
       try {
@@ -143,7 +120,10 @@ export default function CouponListScreen() {
         </Col>
         <Col className="col text-end">
           <div>
-            <Button type="button" onClick={createHandler}>
+            <Button
+              type="button"
+              onClick={() => navigate(`/admin/coupon/create`)}
+            >
               Create Coupon
             </Button>
           </div>

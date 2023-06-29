@@ -42,6 +42,8 @@ import UserListScreen from './screens/UserListScreen';
 import UserEditScreen from './screens/UserEditScreen';
 import ForgetPasswordScreen from './screens/ForgetPasswordScreen';
 import ResetPasswordScreen from './screens/ResetPasswordScreen';
+import CouponCreateScreen from './screens/CouponCreateScreen';
+import ProductCreateScreen from './screens/ProductCreateScreen';
 
 function App() {
   const { state, dispatch: ctxDispatch } = useContext(Store);
@@ -131,9 +133,6 @@ function App() {
                   )}
                   {userInfo && userInfo.isVendor && (
                     <NavDropdown title="Vendor" id="vendor-nav-dropdown">
-                      <LinkContainer to="/vendor/dashboard">
-                        <NavDropdown.Item>Dashboard</NavDropdown.Item>
-                      </LinkContainer>
                       <LinkContainer to="/vendor/products">
                         <NavDropdown.Item>Products</NavDropdown.Item>
                       </LinkContainer>
@@ -246,18 +245,18 @@ function App() {
                 }
               ></Route>
               <Route
-                path="/vendor/dashboard"
-                element={
-                  <VendorRoute>
-                    <DashboardScreen />
-                  </VendorRoute>
-                }
-              ></Route>
-              <Route
                 path="/admin/coupon"
                 element={
                   <AdminRoute>
                     <CouponScreen />
+                  </AdminRoute>
+                }
+              ></Route>
+              <Route
+                path="/admin/coupon/create"
+                element={
+                  <AdminRoute>
+                    <CouponCreateScreen />
                   </AdminRoute>
                 }
               ></Route>
@@ -298,6 +297,14 @@ function App() {
                 element={
                   <VendorRoute>
                     <ProductVendorListScreen />
+                  </VendorRoute>
+                }
+              ></Route>
+              <Route
+                path="/product/create"
+                element={
+                  <VendorRoute>
+                    <ProductCreateScreen />
                   </VendorRoute>
                 }
               ></Route>

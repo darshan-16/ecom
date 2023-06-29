@@ -11,22 +11,23 @@ productRouter.get('/', async (req, res) => {
 });
 
 productRouter.post(
-  '/',
+  '/create',
   isAuth,
   isVendor,
   expressAsyncHandler(async (req, res) => {
     const newProduct = new Product({
-      name: 'sample name ' + Date.now(),
-      slug: 'sample-name-' + Date.now(),
-      image: '/images/p1.jpg',
-      price: 0,
-      category: 'sample category',
-      brand: 'sample brand',
-      countInStock: 0,
+      name: req.body.name,
+      slug: req.body.slug,
+      image: req.body.image,
+      price: req.body.price,
+      images: req.body.images,
+      category: req.body.category,
+      brand: req.body.brand,
+      countInStock: req.body.countInStock,
       rating: 0,
       numReviews: 0,
       createduserid: req.body.createduserid,
-      description: 'sample description',
+      description: req.body.description,
     });
     const product = await newProduct.save();
     res.send({ message: 'Product Created', product });
@@ -65,10 +66,54 @@ productRouter.delete(
   expressAsyncHandler(async (req, res) => {
     const product = await Product.findById(req.params.id);
     if (product) {
-      await product.deleteMany();
+      await Product.deleteMany(product);
       res.send({ message: 'Product Deleted' });
     } else {
       res.status(404).send({ message: 'Product Not Found' });
+    }
+  })
+);
+
+productRouter.delete(
+  '/:productId/reviews/:reviewId',
+  isAuth,
+  isAdmin,
+  expressAsyncHandler(async (req, res) => {
+    const { productId, reviewId } = req.params;
+    try {
+      const product = await Product.findOne({ _id: productId });
+      if (!product) {
+        return res.status(404).send({ message: 'Product not found.' });
+      }
+
+      const review = await Product.findOne(
+        { 'reviews._id': reviewId },
+        { 'reviews.$': 1 }
+      );
+
+      if (!review) {
+        return res.status(404).send({ message: 'Review not found.' });
+      }
+      const newNumReviews = product.numReviews - 1;
+      var newRating = 0;
+      if (product.numReviews == 1) {
+        newRating = 0;
+      } else {
+        newRating =
+          (product.rating * product.numReviews - review.rating) /
+          (product.numReviews - 1);
+      }
+      product.numReviews = newNumReviews;
+      product.rating = newRating;
+      product.reviews.pull({ _id: review.reviews[0]._id });
+      await product.save();
+
+      return res.send({
+        message: 'Review deleted successfully.',
+      });
+    } catch (error) {
+      console.error(error);
+      res.status(500).send({ message: 'Server error' });
     }
   })
 );

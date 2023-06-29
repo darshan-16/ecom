@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useReducer ,useState} from 'react';
+import React, { useContext, useEffect, useReducer, useState } from 'react';
 import axios from 'axios';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import Row from 'react-bootstrap/Row';
@@ -76,14 +76,17 @@ export default function ProductListScreen() {
 
   const { state } = useContext(Store);
   const { userInfo } = state;
-  const createduserid=userInfo._id;
+  const createduserid = userInfo._id;
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const { data } = await axios.get(`/api/products/vendor?page=${page}&createduserid=${createduserid} `, {
-          headers: { Authorization: `Bearer ${userInfo.token}` },
-        });
+        const { data } = await axios.get(
+          `/api/products/vendor?page=${page}&createduserid=${createduserid} `,
+          {
+            headers: { Authorization: `Bearer ${userInfo.token}` },
+          }
+        );
 
         dispatch({ type: 'FETCH_SUCCESS', payload: data });
       } catch (err) {}
@@ -94,32 +97,7 @@ export default function ProductListScreen() {
     } else {
       fetchData();
     }
-  }, [page, userInfo, successDelete]);
-
-  const createHandler = async () => {
-    if (window.confirm('Are you sure to create?')) {
-      try {
-        dispatch({ type: 'CREATE_REQUEST' });
-        const { data } = await axios.post(
-          '/api/products',
-          {
-            createduserid
-          },
-          {
-            headers: { Authorization: `Bearer ${userInfo.token}` },
-          }
-        );
-        toast.success('product created successfully');
-        dispatch({ type: 'CREATE_SUCCESS' });
-        navigate(`/vendor/product/${data.product._id}`);
-      } catch (err) {
-        toast.error(getError(error));
-        dispatch({
-          type: 'CREATE_FAIL',
-        });
-      }
-    }
-  };
+  }, [page, userInfo, successDelete, createduserid]);
 
   const deleteHandler = async (product) => {
     if (window.confirm('Are you sure to delete?')) {
@@ -146,7 +124,7 @@ export default function ProductListScreen() {
         </Col>
         <Col className="col text-end">
           <div>
-            <Button type="button" onClick={createHandler}>
+            <Button type="button" onClick={() => navigate('/product/create')}>
               Create Product
             </Button>
           </div>

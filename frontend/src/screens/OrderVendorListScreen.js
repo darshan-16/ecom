@@ -50,13 +50,12 @@ export default function OrderVenforListScreen() {
   const { userInfo } = state;
   const [productIDs, setproductIDs] = useState([]);
   const [orders, setorders] = useState([]);
-  const createduserid=userInfo._id;
+  const createduserid = userInfo._id;
   const [{ loading, error, loadingDelete, successDelete }, dispatch] =
     useReducer(reducer, {
       loading: true,
       error: '',
     });
-    
 
   useEffect(() => {
     const fetchData = async () => {
@@ -76,12 +75,14 @@ export default function OrderVenforListScreen() {
 
       try {
         dispatch({ type: 'FETCH1_REQUEST' });
-        const { data } = await axios.get(`/api/products/vendor/order?createduserid=${createduserid}`, {
-          headers: { Authorization: `Bearer ${userInfo.token}` },
-        });
+        const { data } = await axios.get(
+          `/api/products/vendor/order?createduserid=${createduserid}`,
+          {
+            headers: { Authorization: `Bearer ${userInfo.token}` },
+          }
+        );
         setproductIDs(data.products);
         dispatch({ type: 'FETCH1_SUCCESS', payload: data });
-
       } catch (err) {
         dispatch({
           type: 'FETCH1_FAIL',
@@ -89,56 +90,53 @@ export default function OrderVenforListScreen() {
         });
       }
     };
-    
+
     if (successDelete) {
       dispatch({ type: 'DELETE_RESET' });
     } else {
       fetchData();
     }
-  }, [userInfo, successDelete]);
+  }, [userInfo, successDelete, createduserid]);
 
-  const productidlist = []
+  const productidlist = [];
   productIDs.forEach((product) => {
-    productidlist.push(product._id)
-  })
-  console.log(productidlist)
-  const orderlist = []
+    productidlist.push(product._id);
+  });
+  console.log(productidlist);
+  const orderlist = [];
   orders.forEach((order) => {
-    order.orderItems.forEach((products) =>{
-      productidlist.forEach((item1)=>{
-        if(products.product===item1)
-        {
-          orderlist.push(<tr key={order._id}>
-          <td>{order._id}</td>
-                      <td>{order.user ? order.user.name : 'DELETED USER'}</td>
-                      <td>{order.createdAt.substring(0, 10)}</td>
-                      <td>{order.isPaid ? order.paidAt.substring(0, 10) : 'No'}</td>    
-                          
-                        <td>{products.name}</td>
-                        <td>{products.quantity}</td>
-                        <td>{products.price}</td>
-                        <td>{products.price*products.quantity}</td>
-                        <td>
-                  <Button
-                    type="button"
-                    variant="light"
-                    onClick={() => {
-                      navigate(`/order/${order._id}`);
-                    }}
-                  >
-                    Details
-                  </Button>
-                  
-                </td>
-                      </tr>);
+    order.orderItems.forEach((products) => {
+      productidlist.forEach((item1) => {
+        if (products.product === item1) {
+          orderlist.push(
+            <tr key={order._id}>
+              <td>{order._id}</td>
+              <td>{order.user ? order.user.name : 'DELETED USER'}</td>
+              <td>{order.createdAt.substring(0, 10)}</td>
+              <td>{order.isPaid ? order.paidAt.substring(0, 10) : 'No'}</td>
+
+              <td>{products.name}</td>
+              <td>{products.quantity}</td>
+              <td>{products.price}</td>
+              <td>{products.price * products.quantity}</td>
+              <td>
+                <Button
+                  type="button"
+                  variant="light"
+                  onClick={() => {
+                    navigate(`/order/${order._id}`);
+                  }}
+                >
+                  Details
+                </Button>
+              </td>
+            </tr>
+          );
         }
-      })
-    })
-  })
-  console.log(orderlist)
-
-
-
+      });
+    });
+  });
+  console.log(orderlist);
 
   return (
     <div>
@@ -166,9 +164,7 @@ export default function OrderVenforListScreen() {
               <th>ACTIONS</th>
             </tr>
           </thead>
-          <tbody>
-            {orderlist}
-          </tbody>
+          <tbody>{orderlist}</tbody>
         </table>
       )}
     </div>

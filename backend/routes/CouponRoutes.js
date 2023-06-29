@@ -11,17 +11,17 @@ CouponRouter.get('/', async (req, res) => {
 });
 
 CouponRouter.post(
-  '/',
+  '/create',
   isAuth,
   isAdmin,
   expressAsyncHandler(async (req, res) => {
     const newCoupon = new Coupon({
-      name: 'sample name ' + Date.now(),
-      code: 'generated' + Date.now(),
-      category: 'persentage',
-      value: 15,
-      purchaceAbove: 200,
-      remainingUsage: 5,
+      name: req.body.name,
+      code: req.body.code,
+      category: req.body.category,
+      value: req.body.value,
+      purchaceAbove: req.body.purchaceAbove,
+      remainingUsage: req.body.remainingUsage,
       usersUsed: 0,
     });
     const product = await newCoupon.save();
@@ -74,7 +74,7 @@ CouponRouter.delete(
   expressAsyncHandler(async (req, res) => {
     const coupon = await Coupon.findById(req.params.id);
     if (coupon) {
-      await coupon.deleteMany();
+      await Coupon.deleteMany(coupon);
       res.send({ message: 'coupon Deleted' });
     } else {
       res.status(404).send({ message: 'coupon Not Found' });
@@ -82,43 +82,7 @@ CouponRouter.delete(
   })
 );
 
-// CouponRouter.post(
-//   '/:id/reviews',
-//   isAuth,
-//   expressAsyncHandler(async (req, res) => {
-//     const productId = req.params.id;
-//     const product = await Coupon.findById(productId);
-//     if (product) {
-//       if (product.reviews.find((x) => x.name === req.user.name)) {
-//         return res
-//           .status(400)
-//           .send({ message: 'You already submitted a review' });
-//       }
-
-//       const review = {
-//         name: req.user.name,
-//         rating: Number(req.body.rating),
-//         comment: req.body.comment,
-//       };
-//       product.reviews.push(review);
-//       product.numReviews = product.reviews.length;
-//       product.rating =
-//         product.reviews.reduce((a, c) => c.rating + a, 0) /
-//         product.reviews.length;
-//       const updatedProduct = await product.save();
-//       res.status(201).send({
-//         message: 'Review Created',
-//         review: updatedProduct.reviews[updatedProduct.reviews.length - 1],
-//         numReviews: product.numReviews,
-//         rating: product.rating,
-//       });
-//     } else {
-//       res.status(404).send({ message: 'Product Not Found' });
-//     }
-//   })
-// );
-
-const PAGE_SIZE = 3;
+const PAGE_SIZE = 10;
 
 CouponRouter.get(
   '/admin',
@@ -141,92 +105,6 @@ CouponRouter.get(
     });
   })
 );
-
-// CouponRouter.get(
-//   '/search',
-//   expressAsyncHandler(async (req, res) => {
-//     const { query } = req;
-//     const pageSize = query.pageSize || PAGE_SIZE;
-//     const page = query.page || 1;
-//     const category = query.category || '';
-//     const price = query.price || '';
-//     const rating = query.rating || '';
-//     const order = query.order || '';
-//     const searchQuery = query.query || '';
-
-//     const queryFilter =
-//       searchQuery && searchQuery !== 'all'
-//         ? {
-//             name: {
-//               $regex: searchQuery,
-//               $options: 'i',
-//             },
-//           }
-//         : {};
-//     const categoryFilter = category && category !== 'all' ? { category } : {};
-//     const ratingFilter =
-//       rating && rating !== 'all'
-//         ? {
-//             rating: {
-//               $gte: Number(rating),
-//             },
-//           }
-//         : {};
-//     const priceFilter =
-//       price && price !== 'all'
-//         ? {
-//             // 1-50
-//             price: {
-//               $gte: Number(price.split('-')[0]),
-//               $lte: Number(price.split('-')[1]),
-//             },
-//           }
-//         : {};
-//     const sortOrder =
-//       order === 'featured'
-//         ? { featured: -1 }
-//         : order === 'lowest'
-//         ? { price: 1 }
-//         : order === 'highest'
-//         ? { price: -1 }
-//         : order === 'toprated'
-//         ? { rating: -1 }
-//         : order === 'newest'
-//         ? { createdAt: -1 }
-//         : { _id: -1 };
-
-//     const products = await Product.find({
-//       ...queryFilter,
-//       ...categoryFilter,
-//       ...priceFilter,
-//       ...ratingFilter,
-//     })
-//       .sort(sortOrder)
-//       .skip(pageSize * (page - 1))
-//       .limit(pageSize);
-
-//     const countProducts = await Product.countDocuments({
-//       ...queryFilter,
-//       ...categoryFilter,
-//       ...priceFilter,
-//       ...ratingFilter,
-//     });
-//     res.send({
-//       products,
-//       countProducts,
-//       page,
-//       pages: Math.ceil(countProducts / pageSize),
-//     });
-//   })
-// );
-
-// CouponRouter.get(
-//   '/categories',
-//   expressAsyncHandler(async (req, res) => {
-//     const categories = await Product.find().distinct('category');
-//     res.send(categories);
-//   })
-// );
 
 CouponRouter.get('/code/:couponcode', async (req, res) => {
   const coupon = await Coupon.findOne({ code: req.params.couponcode });

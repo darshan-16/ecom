@@ -25,6 +25,7 @@ export default function ProfileScreen() {
   const { state, dispatch: ctxDispatch } = useContext(Store);
   const { userInfo } = state;
   const [name, setName] = useState(userInfo.name);
+  const [rewardCoins] = useState(userInfo.rewardCoins);
   const [email, setEmail] = useState(userInfo.email);
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
@@ -75,6 +76,10 @@ export default function ProfileScreen() {
             onChange={(e) => setName(e.target.value)}
             required
           />
+        </Form.Group>
+        <Form.Group className="mb-3" controlId="name">
+          <Form.Label>Reward Coins</Form.Label>
+          <Form.Control value={rewardCoins} disabled />
         </Form.Group>
         <Form.Group className="mb-3" controlId="name">
           <Form.Label>Email</Form.Label>

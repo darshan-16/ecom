@@ -116,6 +116,7 @@ function ProductScreen() {
       toast.error(getError(error));
       dispatch({ type: 'CREATE_FAIL' });
     }
+    e.preventDefault();
   };
   return loading ? (
     <LoadingBox />
