@@ -1,7 +1,7 @@
 # Ecommerce website
 
 ### Published Url: https://ecom-20hk.onrender.com
-### Analytics Url: https://analytics.google.com/analytics/web/#/p391615710/reports/reportinghub?params=_u..nav%3Dmaui%26_u..comparisons%3D%5B%7B%22name%22:%22All%20Users%22,%22isEnabled%22:true,%22filters%22:%5B%7B%22isCaseSensitive%22:true,%22expression%22:%220%22,%22fieldName%22:%22audience%22%7D%5D%7D%5D&collectionId=business-objectives
+### Analytics Url: https://analytics.google.com/analytics/web/#/p391615710/reports/reportinghub?params=_u..nav%3Dmaui
 
 ## Credentials
 ### Admin credentials:
